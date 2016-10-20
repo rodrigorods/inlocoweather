@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">InLocoWeather</string>
-    <string name="title_activity_search_city_map">Buscar Cidade</string>
+    <string name="title_activity_search_city_map">Mapa</string>
+    <string name="search_cities_weather_btn_text">Buscar clima nas imediações</string>
 </resources>
