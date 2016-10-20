@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">InLocoWeather</string>
+    <string name="title_activity_search_city_map">Buscar Cidade</string>
+</resources>

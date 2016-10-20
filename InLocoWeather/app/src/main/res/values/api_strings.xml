@@ -1,0 +1,4 @@
+<resources>
+    <string name="base_url">http://api.openweathermap.org</string>
+    <string name="weather_api_key">85a9653cd11497ea4f87e15af772d408</string>
+</resources>
