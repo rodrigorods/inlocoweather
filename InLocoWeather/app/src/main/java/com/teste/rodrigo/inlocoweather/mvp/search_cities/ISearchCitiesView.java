@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface ISearchCitiesView {
     void onCitiesLoaded(List<CityWeather> cities);
-    void onCitiesError();
+    void onCitiesLoadError();
 }

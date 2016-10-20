@@ -1,7 +1,6 @@
 package com.teste.rodrigo.inlocoweather.mvp.search_cities;
 
 import android.content.res.Resources;
-import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.teste.rodrigo.inlocoweather.R;
@@ -41,13 +40,13 @@ public class SearchCitiesPresenterImp implements ISearchCitiesPresenter{
                         if (response.isSuccessful()) {
                             mView.onCitiesLoaded(response.body().getCityWeatherList());
                         } else {
-                            mView.onCitiesError();
+                            mView.onCitiesLoadError();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<SearchCityResult> call, Throwable t) {
-                        mView.onCitiesError();
+                        mView.onCitiesLoadError();
                     }
                 });
     }
