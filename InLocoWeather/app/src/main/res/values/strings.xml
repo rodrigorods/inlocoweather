@@ -1,5 +1,15 @@
 <resources>
     <string name="app_name">InLocoWeather</string>
+
+
     <string name="title_activity_search_city_map">Mapa</string>
+    <string name="title_activity_list_city_weather">Cidades nas imediações</string>
     <string name="search_cities_weather_btn_text">Buscar clima nas imediações</string>
+
+
+    <string name="geral_ok">OK</string>
+    <string name="geral_loading">Carregando&#8230;</string>
+
+
+    <string name="warning_no_connectivity">Seu aparelho não está conectado à internet. Verifique sua conexão e tente novamente!</string>
 </resources>

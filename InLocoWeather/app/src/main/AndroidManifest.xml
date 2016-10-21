@@ -24,6 +24,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".ui.ListCityWeatherActivity"
+            android:label="@string/title_activity_search_city_map"/>
     </application>
 
 </manifest>
