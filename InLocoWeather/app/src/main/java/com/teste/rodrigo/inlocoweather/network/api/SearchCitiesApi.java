@@ -11,5 +11,6 @@ public interface SearchCitiesApi {
     Call<SearchCityResult> searchCitiesForLocation(@Query("lat") double latitude,
                                                    @Query("lon") double longitude,
                                                    @Query("cnt") int count,
+                                                   @Query("units") String metricUnit,
                                                    @Query("APPID") String apiKey);
 }
