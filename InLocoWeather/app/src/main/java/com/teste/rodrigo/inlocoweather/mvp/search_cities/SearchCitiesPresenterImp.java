@@ -15,6 +15,7 @@ import retrofit2.Response;
 public class SearchCitiesPresenterImp implements ISearchCitiesPresenter{
 
     private static final int CITIES_COUNT = 15;
+    private static final String CELSIUS_METRIC = "metric";
 
     private SearchCitiesApi mSearchApi;
     private ISearchCitiesView mView;
@@ -33,6 +34,7 @@ public class SearchCitiesPresenterImp implements ISearchCitiesPresenter{
         mSearchApi.searchCitiesForLocation( coords.latitude,
                                             coords.longitude,
                                             CITIES_COUNT,
+                                            CELSIUS_METRIC,
                                             mResources.getString(R.string.weather_api_key))
                 .enqueue(new Callback<SearchCityResult>() {
                     @Override
