@@ -1,0 +1,55 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:background="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"/>
+
+    <LinearLayout
+        android:layout_margin="12dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/max_temp_tv"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"
+            android:text="Max temp: "
+            android:bufferType="spannable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <android.support.v4.widget.Space
+            android:layout_width="0dp"
+            android:layout_height="12dp" />
+
+        <TextView
+            android:id="@+id/min_temp_tv"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"
+            android:text="Min temp: "
+            android:bufferType="spannable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <android.support.v4.widget.Space
+            android:layout_width="0dp"
+            android:layout_height="12dp" />
+
+        <TextView
+            android:id="@+id/description_temp_tv"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"
+            android:text="Description: "
+            android:bufferType="spannable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+</LinearLayout>

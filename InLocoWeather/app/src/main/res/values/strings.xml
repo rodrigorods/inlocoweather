@@ -4,12 +4,19 @@
 
     <string name="title_activity_search_city_map">Mapa</string>
     <string name="title_activity_list_city_weather">Cidades nas imediações</string>
+    <string name="title_activity_detail_city_weather">Detalhes de %1$s</string>
     <string name="search_cities_weather_btn_text">Buscar clima nas imediações</string>
 
 
     <string name="geral_ok">OK</string>
     <string name="geral_loading">Carregando&#8230;</string>
+    <string name="geral_search">Buscar</string>
 
 
     <string name="warning_no_connectivity">Seu aparelho não está conectado à internet. Verifique sua conexão e tente novamente!</string>
+    <string name="warning_unknow_error">Um erro desconhecido não deixou sua requisição ser concluída. Tente novamente mais tarde!</string>
+
+    <string name="min_temp">Min temp: %1$sºC</string>
+    <string name="max_temp">Max temp: %1$sºC</string>
+    <string name="description_temp">Weather description: %1$s</string>
 </resources>

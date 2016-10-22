@@ -1,22 +1,25 @@
 package com.teste.rodrigo.inlocoweather.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.teste.rodrigo.inlocoweather.R;
 import com.teste.rodrigo.inlocoweather.adapter.SurroundingsCitiesAdapter;
 import com.teste.rodrigo.inlocoweather.decorator.DividerItemDecorator;
+import com.teste.rodrigo.inlocoweather.model.CityWeather;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ListCityWeatherActivity extends AppCompatActivity {
+public class ListCityWeatherActivity extends AppCompatActivity implements View.OnClickListener{
 
     public static final String EXTRA_CITIES_ARRAY = "ASD*@&OgUxASD";
 
@@ -40,7 +43,11 @@ public class ListCityWeatherActivity extends AppCompatActivity {
         ArrayList cities = getIntent().getParcelableArrayListExtra(EXTRA_CITIES_ARRAY);
 
         mCityWeatherList.addItemDecoration(new DividerItemDecorator(getBaseContext()));
-        mCityWeatherList.setAdapter(new SurroundingsCitiesAdapter(cities));
+
+        SurroundingsCitiesAdapter adapter = new SurroundingsCitiesAdapter(cities);
+        adapter.setOnItemClickListener(this);
+
+        mCityWeatherList.setAdapter(adapter);
     }
 
     @Override
@@ -51,5 +58,14 @@ public class ListCityWeatherActivity extends AppCompatActivity {
         }
 
         return false;
+    }
+
+    @Override
+    public void onClick(View v) {
+        CityWeather cityWeather = (CityWeather) v.getTag();
+        Intent it = new Intent(getBaseContext(), CityWeatherDetailActivity.class);
+        it.putExtra(CityWeatherDetailActivity.EXTRA_CITY, cityWeather);
+
+        startActivity(it);
     }
 }

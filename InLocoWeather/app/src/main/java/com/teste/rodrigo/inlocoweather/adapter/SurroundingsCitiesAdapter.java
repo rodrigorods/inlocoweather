@@ -14,6 +14,7 @@ import java.util.List;
 public class SurroundingsCitiesAdapter extends RecyclerView.Adapter<CityWeatherViewHolder>{
 
     private List<CityWeather> mCities;
+    private View.OnClickListener onItemClickListener;
 
     public SurroundingsCitiesAdapter(List<CityWeather> cities){
         this.mCities = cities;
@@ -23,13 +24,18 @@ public class SurroundingsCitiesAdapter extends RecyclerView.Adapter<CityWeatherV
     public CityWeatherViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater mInflater = LayoutInflater.from(parent.getContext());
         View itemView = mInflater.inflate ( R.layout.cell_city_weather, parent, false );
+
+        if (onItemClickListener != null) {
+            itemView.setOnClickListener(onItemClickListener);
+        }
+
         return new CityWeatherViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(CityWeatherViewHolder holder, int position) {
         CityWeather cityWeather = mCities.get(position);
-        holder.fillContent(cityWeather.getCityName());
+        holder.fillContent(cityWeather);
     }
 
     @Override
@@ -37,4 +43,7 @@ public class SurroundingsCitiesAdapter extends RecyclerView.Adapter<CityWeatherV
         return mCities.size();
     }
 
+    public void setOnItemClickListener(View.OnClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
 }
