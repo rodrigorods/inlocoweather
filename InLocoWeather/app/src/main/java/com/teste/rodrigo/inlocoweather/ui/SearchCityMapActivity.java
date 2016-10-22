@@ -3,8 +3,12 @@ package com.teste.rodrigo.inlocoweather.ui;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -32,6 +36,8 @@ import butterknife.OnClick;
 
 public class SearchCityMapActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener, GoogleMap.OnMarkerClickListener, ISearchCitiesView {
 
+    private static final String EXTRA_LOCATION = "AAW7U@al";
+
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
@@ -43,6 +49,8 @@ public class SearchCityMapActivity extends AppCompatActivity implements OnMapRea
     private Marker currentDisplayedMarker;
 
     private ProgressDialog progressDialog;
+
+    private LatLng savedLocationLatLng = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +72,29 @@ public class SearchCityMapActivity extends AppCompatActivity implements OnMapRea
         if (!ConnectivityUtil.isAppConnectedToInternet(getBaseContext())){
             Util.showWarning(getWindow().getContext(), R.string.warning_no_connectivity);
         }
+
+        if (savedInstanceState != null) {
+            savedLocationLatLng = savedInstanceState.getParcelable(EXTRA_LOCATION);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_search_menu, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.search);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView.setOnQueryTextListener(this);
+
+        return true;
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        if (currentDisplayedMarker != null)
+            outState.putParcelable(EXTRA_LOCATION, currentDisplayedMarker.getPosition());
     }
 
     @Override
@@ -71,6 +102,11 @@ public class SearchCityMapActivity extends AppCompatActivity implements OnMapRea
         mMap = googleMap;
         mMap.setOnMapClickListener(this);
         mMap.setOnMarkerClickListener(this);
+
+        if (savedLocationLatLng != null) {
+            handleShowMarker(savedLocationLatLng);
+            savedLocationLatLng = null;
+        }
     }
 
     @OnClick(R.id.search_cities_weather_btn)
@@ -95,13 +131,12 @@ public class SearchCityMapActivity extends AppCompatActivity implements OnMapRea
 
     @Override
     public void onCitiesLoadError() {
-        //TODO SNACKBAR COM TENTAR NOVAMENTE
         dismissLoading();
 
         if (!ConnectivityUtil.isAppConnectedToInternet(getBaseContext())){
-
+            Util.showWarning(getWindow().getContext(), R.string.warning_no_connectivity);
         } else {
-
+            Util.showWarning(getWindow().getContext(), R.string.warning_unknow_error);
         }
     }
 
@@ -109,6 +144,10 @@ public class SearchCityMapActivity extends AppCompatActivity implements OnMapRea
     public void onMapClick(LatLng latLng) {
         removeMarker(this.currentDisplayedMarker);
 
+        handleShowMarker(latLng);
+    }
+
+    private void handleShowMarker(LatLng latLng) {
         mSearchSurroundingsBtn.setVisibility(View.VISIBLE);
 
         currentDisplayedMarker = mMap.addMarker(new MarkerOptions().position(latLng));
