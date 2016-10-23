@@ -16,6 +16,11 @@ public class CityWeather implements Parcelable {
         this.weatherDescription = weatherDescription;
     }
 
+    @Override
+    public String toString() {
+        return getCityName();
+    }
+
     public String getCityName() {
         return cityName;
     }

@@ -6,22 +6,21 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.teste.rodrigo.inlocoweather.R;
-import com.teste.rodrigo.inlocoweather.model.CityWeather;
-import com.teste.rodrigo.inlocoweather.ui.viewholder.CityWeatherViewHolder;
+import com.teste.rodrigo.inlocoweather.ui.viewholder.SimpleSingleLineViewHolder;
 
 import java.util.List;
 
-public class SurroundingsCitiesAdapter extends RecyclerView.Adapter<CityWeatherViewHolder>{
+public class SimpleSingleLineAdapter<T> extends RecyclerView.Adapter<SimpleSingleLineViewHolder>{
 
-    private List<CityWeather> mCities;
+    private List<T> dataList;
     private View.OnClickListener onItemClickListener;
 
-    public SurroundingsCitiesAdapter(List<CityWeather> cities){
-        this.mCities = cities;
+    public SimpleSingleLineAdapter(List<T> dataList){
+        this.dataList = dataList;
     }
 
     @Override
-    public CityWeatherViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public SimpleSingleLineViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater mInflater = LayoutInflater.from(parent.getContext());
         View itemView = mInflater.inflate ( R.layout.cell_city_weather, parent, false );
 
@@ -29,21 +28,25 @@ public class SurroundingsCitiesAdapter extends RecyclerView.Adapter<CityWeatherV
             itemView.setOnClickListener(onItemClickListener);
         }
 
-        return new CityWeatherViewHolder(itemView);
+        return new SimpleSingleLineViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(CityWeatherViewHolder holder, int position) {
-        CityWeather cityWeather = mCities.get(position);
-        holder.fillContent(cityWeather);
+    public void onBindViewHolder(SimpleSingleLineViewHolder holder, int position) {
+        holder.fillContent(dataList.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return mCities.size();
+        return dataList.size();
     }
 
     public void setOnItemClickListener(View.OnClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
+    }
+
+    public void updateAllData(List<T> dataList){
+        this.dataList = dataList;
+        notifyDataSetChanged();
     }
 }

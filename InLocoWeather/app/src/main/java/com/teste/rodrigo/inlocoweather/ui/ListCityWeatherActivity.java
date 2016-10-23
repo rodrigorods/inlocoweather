@@ -10,7 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.teste.rodrigo.inlocoweather.R;
-import com.teste.rodrigo.inlocoweather.adapter.SurroundingsCitiesAdapter;
+import com.teste.rodrigo.inlocoweather.adapter.SimpleSingleLineAdapter;
 import com.teste.rodrigo.inlocoweather.decorator.DividerItemDecorator;
 import com.teste.rodrigo.inlocoweather.model.CityWeather;
 
@@ -40,11 +40,11 @@ public class ListCityWeatherActivity extends AppCompatActivity implements View.O
         mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
         setSupportActionBar(mToolbar);
 
-        ArrayList cities = getIntent().getParcelableArrayListExtra(EXTRA_CITIES_ARRAY);
+        ArrayList<CityWeather> cities = getIntent().getParcelableArrayListExtra(EXTRA_CITIES_ARRAY);
 
         mCityWeatherList.addItemDecoration(new DividerItemDecorator(getBaseContext()));
 
-        SurroundingsCitiesAdapter adapter = new SurroundingsCitiesAdapter(cities);
+        SimpleSingleLineAdapter<CityWeather> adapter = new SimpleSingleLineAdapter<>(cities);
         adapter.setOnItemClickListener(this);
 
         mCityWeatherList.setAdapter(adapter);

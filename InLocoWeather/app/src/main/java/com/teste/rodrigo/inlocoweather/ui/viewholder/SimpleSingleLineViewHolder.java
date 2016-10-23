@@ -5,23 +5,22 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.teste.rodrigo.inlocoweather.R;
-import com.teste.rodrigo.inlocoweather.model.CityWeather;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class CityWeatherViewHolder extends RecyclerView.ViewHolder{
+public class SimpleSingleLineViewHolder extends RecyclerView.ViewHolder{
 
     @BindView(R.id.city_name)
-    TextView cityNameTv;
+    TextView singleTv;
 
-    public CityWeatherViewHolder(View itemView) {
+    public SimpleSingleLineViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
     }
 
-    public void fillContent(CityWeather city){
-        itemView.setTag(city);
-        cityNameTv.setText(city.getCityName());
+    public void fillContent(Object data){
+        itemView.setTag(data);
+        singleTv.setText(data.toString());
     }
 }
