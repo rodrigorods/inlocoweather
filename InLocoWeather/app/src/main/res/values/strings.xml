@@ -10,7 +10,7 @@
 
     <string name="geral_ok">OK</string>
     <string name="geral_loading">Carregando&#8230;</string>
-    <string name="geral_search">Buscar</string>
+    <string name="geral_search_city_to_pin">Buscar cidade</string>
 
 
     <string name="warning_no_connectivity">Seu aparelho não está conectado à internet. Verifique sua conexão e tente novamente!</string>

@@ -7,17 +7,17 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.teste.rodrigo.inlocoweather.model.CityWeather;
-import com.teste.rodrigo.inlocoweather.model.api_result.SearchCityResult;
+import com.teste.rodrigo.inlocoweather.model.api_result.ApiListResult;
 
 import java.lang.reflect.Type;
 
-public class SearchCityDeserializer implements JsonDeserializer<SearchCityResult>
+public class SearchCityDeserializer implements JsonDeserializer<ApiListResult>
 {
     @Override
-    public SearchCityResult deserialize(JsonElement je, Type type, JsonDeserializationContext jdc)
+    public ApiListResult deserialize(JsonElement je, Type type, JsonDeserializationContext jdc)
             throws JsonParseException
     {
-        SearchCityResult result = new SearchCityResult();
+        ApiListResult<CityWeather> result = new ApiListResult<>();
 
         JsonArray jsonArray = je.getAsJsonObject().getAsJsonArray("list");
 
@@ -33,7 +33,7 @@ public class SearchCityDeserializer implements JsonDeserializer<SearchCityResult
             JsonArray jsonWeatherArray = jsonObject.get("weather").getAsJsonArray();
             String description = assembleWeatherDescription(jsonWeatherArray);
 
-            result.addCity(new CityWeather(cityName, tempMin, tempMax, description));
+            result.addModel(new CityWeather(cityName, tempMin, tempMax, description));
         }
 
         return result;

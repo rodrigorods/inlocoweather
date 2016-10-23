@@ -4,4 +4,5 @@ import com.google.android.gms.maps.model.LatLng;
 
 public interface ISearchCitiesPresenter {
     void searchSurroundingCities(LatLng coords);
+    void searchCityByTerm(String query);
 }
