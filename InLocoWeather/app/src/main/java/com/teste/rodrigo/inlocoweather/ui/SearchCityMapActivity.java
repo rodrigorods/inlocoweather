@@ -1,5 +1,7 @@
 package com.teste.rodrigo.inlocoweather.ui;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -43,6 +45,8 @@ import butterknife.OnClick;
 public class SearchCityMapActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener, GoogleMap.OnMarkerClickListener, ISearchCitiesView {
 
     private static final String EXTRA_LOCATION = "AAW7U@al";
+    private static final String EXTRA_IS_SHOWING_MAP = "A)S(PDOxhiA";
+    private static final String EXTRA_LOADED_OPTIONS = "OULFYAV>@YH";
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -55,6 +59,8 @@ public class SearchCityMapActivity extends AppCompatActivity implements OnMapRea
 
     @BindView(R.id.map_container)
     View mapContainer;
+
+    private SearchView searchView;
 
     private ISearchCitiesPresenter mPresenter;
     private GoogleMap mMap;
@@ -91,6 +97,33 @@ public class SearchCityMapActivity extends AppCompatActivity implements OnMapRea
 
         if (savedInstanceState != null) {
             savedLocationLatLng = savedInstanceState.getParcelable(EXTRA_LOCATION);
+            boolean isShowingMap = savedInstanceState.getBoolean(EXTRA_IS_SHOWING_MAP);
+            if (isShowingMap){
+                showMapContainer();
+            } else {
+                showCitiesOptionsList();
+            }
+
+            ArrayList<GeocodedAddress> options = savedInstanceState.getParcelableArrayList(EXTRA_LOADED_OPTIONS);
+            if (options != null) {
+                initOptionsListAdapter(options);
+            }
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        if (currentDisplayedMarker != null)
+            outState.putParcelable(EXTRA_LOCATION, currentDisplayedMarker.getPosition());
+
+        if (mapContainer.getVisibility() == View.VISIBLE)
+            outState.putBoolean(EXTRA_IS_SHOWING_MAP, true);
+
+        if (mSearchOptionsList.getAdapter() != null) {
+            SimpleSingleLineAdapter<GeocodedAddress> adapter = (SimpleSingleLineAdapter<GeocodedAddress>) mSearchOptionsList.getAdapter();
+            outState.putParcelableArrayList(EXTRA_LOADED_OPTIONS, (ArrayList<GeocodedAddress>) adapter.getDataList());
         }
     }
 
@@ -99,7 +132,8 @@ public class SearchCityMapActivity extends AppCompatActivity implements OnMapRea
         getMenuInflater().inflate(R.menu.main_search_menu, menu);
 
         MenuItem searchItem = menu.findItem(R.id.search);
-        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+
+        searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setQueryHint(getString(R.string.geral_search_city_to_pin));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
@@ -122,31 +156,12 @@ public class SearchCityMapActivity extends AppCompatActivity implements OnMapRea
                 showCitiesOptionsList();
                 mPresenter.searchCityByTerm(query);
 
-                imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
                 return true;
             }
 
         });
 
         return true;
-    }
-
-    private void showCitiesOptionsList() {
-        mapContainer.setVisibility(View.GONE);
-        mSearchOptionsList.setVisibility(View.VISIBLE);
-    }
-
-    private void showMapContainer() {
-        mapContainer.setVisibility(View.VISIBLE);
-        mSearchOptionsList.setVisibility(View.GONE);
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        if (currentDisplayedMarker != null)
-            outState.putParcelable(EXTRA_LOCATION, currentDisplayedMarker.getPosition());
     }
 
     @Override
@@ -175,7 +190,10 @@ public class SearchCityMapActivity extends AppCompatActivity implements OnMapRea
     @Override
     public void onCitiesLoadedByTerm(List<GeocodedAddress> addresses) {
         dismissLoading();
+        initOptionsListAdapter(addresses);
+    }
 
+    private void initOptionsListAdapter(List<GeocodedAddress> addresses) {
         if (mSearchOptionsList.getAdapter() != null) {
             SimpleSingleLineAdapter<GeocodedAddress> adapter = (SimpleSingleLineAdapter<GeocodedAddress>) mSearchOptionsList.getAdapter();
             adapter.updateAllData(addresses);
@@ -186,6 +204,9 @@ public class SearchCityMapActivity extends AppCompatActivity implements OnMapRea
                 public void onClick(View v) {
                     GeocodedAddress address = (GeocodedAddress) v.getTag();
                     onMapClick(new LatLng(address.getLatitude(), address.getLongitude()));//Mock Click - to force remove previous marker
+
+                    if (searchView != null)
+                        imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
 
                     showMapContainer();
                 }
@@ -224,15 +245,39 @@ public class SearchCityMapActivity extends AppCompatActivity implements OnMapRea
 
     private void handleShowMarker(LatLng latLng) {
         mSearchSurroundingsBtn.setVisibility(View.VISIBLE);
+        mSearchSurroundingsBtn.animate()
+                .alpha(1f)
+                .setDuration(250)
+                .setListener(null);
+
 
         currentDisplayedMarker = mMap.addMarker(new MarkerOptions().position(latLng));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
     }
 
+    private void showCitiesOptionsList() {
+        mapContainer.setVisibility(View.GONE);
+        mSearchOptionsList.setVisibility(View.VISIBLE);
+    }
+
+    private void showMapContainer() {
+        mapContainer.setVisibility(View.VISIBLE);
+        mSearchOptionsList.setVisibility(View.GONE);
+    }
+
     @Override
     public boolean onMarkerClick(Marker marker) {
         removeMarker(marker);
-        mSearchSurroundingsBtn.setVisibility(View.GONE);
+        mSearchSurroundingsBtn.animate()
+                .alpha(0f)
+                .setDuration(250)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        mSearchSurroundingsBtn.setVisibility(View.GONE);
+                    }
+                });
+
         return true;
     }
 

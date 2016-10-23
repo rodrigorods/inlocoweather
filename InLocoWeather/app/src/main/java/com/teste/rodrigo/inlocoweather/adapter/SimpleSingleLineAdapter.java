@@ -49,4 +49,8 @@ public class SimpleSingleLineAdapter<T> extends RecyclerView.Adapter<SimpleSingl
         this.dataList = dataList;
         notifyDataSetChanged();
     }
+
+    public List<T> getDataList() {
+        return dataList;
+    }
 }
